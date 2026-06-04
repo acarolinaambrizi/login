@@ -9,26 +9,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
-export default function LoginPage() {
+export default function SignupPage() {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
       });
       if (error) throw error;
 
-      toast.success("Login realizado com sucesso!");
-      router.push("/home");
+      toast.success("Cadastro realizado! Verifique seu email.");
+      router.push("/login");
     } catch (err: any) {
-      toast.error(err.message ?? "Erro ao fazer login");
+      toast.error(err.message ?? "Erro ao cadastrar");
     } finally {
       setLoading(false);
     }
@@ -38,11 +44,21 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm dark:bg-gray-800/80">
         <CardHeader>
-          <CardTitle className="text-2xl">Entrar no App</CardTitle>
-          <CardDescription>Digite suas credenciais para acessar</CardDescription>
+          <CardTitle className="text-2xl">Criar Conta</CardTitle>
+          <CardDescription>Preencha os dados para se cadastrar</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Nome Completo</Label>
+              <Input
+                id="fullName"
+                placeholder="João da Silva"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -66,16 +82,16 @@ export default function LoginPage() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Carregando..." : "Entrar"}
+              {loading ? "Cadastrando..." : "Cadastrar"}
             </Button>
           </form>
 
           <div className="mt-4 text-center">
             <button
-              onClick={() => router.push("/signup")}
+              onClick={() => router.push("/login")}
               className="text-sm text-blue-600 hover:underline"
             >
-              Não tem conta? Cadastre‑se
+              Já tem conta? Entrar
             </button>
           </div>
         </CardContent>
