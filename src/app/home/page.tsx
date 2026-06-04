@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { TodoList } from "@/components/todo/TodoList";
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -35,8 +36,8 @@ export default function HomePage() {
               Sair
             </Button>
           </div>
-          
-          <Card className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/80">
+
+          <Card className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/80 mb-6">
             <CardHeader>
               <CardTitle>Dashboard</CardTitle>
               <CardDescription>
@@ -44,9 +45,7 @@ export default function HomePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 dark:text-gray-300">
-                Conteúdo protegido - apenas usuários autenticados
-              </p>
+              <TodoList />
             </CardContent>
           </Card>
         </div>
