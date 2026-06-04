@@ -1,73 +1,98 @@
-# AI Development Rules
+# AI Rules
 
-This document outlines the technology stack and specific library usage guidelines for this Next.js application. Adhering to these rules will help maintain consistency, improve collaboration, and ensure the AI assistant can effectively understand and modify the codebase.
+> Lido automaticamente pelo Dyad a cada prompt. Mantenha este arquivo **curto e direto** — regras longas diluem as importantes.
+> Detalhes de arquitetura estão em `docs/frontend.md`, `docs/backend.md` e nos `README.md` de cada contexto em `src/contexts/`.
 
-## Tech Stack Overview
+---
 
-The application is built using the following core technologies:
+## Projeto
 
-*   **Framework**: Next.js (App Router)
-*   **Language**: TypeScript
-*   **UI Components**: Shadcn/UI - A collection of re-usable UI components built with Radix UI and Tailwind CSS.
-*   **Styling**: Tailwind CSS - A utility-first CSS framework for rapid UI development.
-*   **Icons**: Lucide React - A comprehensive library of simply beautiful SVG icons.
-*   **Forms**: React Hook Form for managing form state and validation, typically with Zod for schema validation.
-*   **State Management**: Primarily React Context API and built-in React hooks (`useState`, `useReducer`).
-*   **Notifications/Toasts**: Sonner for displaying non-intrusive notifications.
-*   **Charts**: Recharts for data visualization.
-*   **Animation**: `tailwindcss-animate` and animation capabilities built into Radix UI components.
+- React + TypeScript + Vite + Supabase. Stack completa em `docs/frontend.md`.
+- Página principal: `src/pages/Index.tsx` — **sempre atualizar** ao adicionar componentes visíveis.
+- Rotas: todas em `src/App.tsx`, nunca em outros arquivos.
+- Código-fonte: somente dentro de `src/`.
 
-## Library Usage Guidelines
+---
 
-To ensure consistency and leverage the chosen stack effectively, please follow these rules:
+## Consulta aos Guias de Detalhe
 
-1.  **UI Components**:
-    *   **Primary Choice**: Always prioritize using components from the `src/components/ui/` directory (Shadcn/UI components).
-    *   **Custom Components**: If a required component is not available in Shadcn/UI, create a new component in `src/components/` following Shadcn/UI's composition patterns (i.e., building on Radix UI primitives and styled with Tailwind CSS).
-    *   **Avoid**: Introducing new, third-party UI component libraries without discussion.
+Ao receber uma tarefa:
 
-2.  **Styling**:
-    *   **Primary Choice**: Exclusively use Tailwind CSS utility classes for all styling.
-    *   **Global Styles**: Reserve `src/app/globals.css` for base Tailwind directives, global CSS variable definitions, and minimal base styling. Avoid adding component-specific styles here.
-    *   **CSS-in-JS**: Do not use CSS-in-JS libraries (e.g., Styled Components, Emotion).
+1. Leia este `AI_RULES.md` primeiro.
+2. Identifique o contexto funcional em `src/contexts/<nome>/`.
+3. Se o contexto ainda não existir, crie a estrutura inicial completa do contexto, incluindo `README.md`.
+4. Leia o `README.md` do contexto relevante antes de editar código.
+5. Consulte apenas a seção necessária dos guias abaixo, usando o **Índice Operacional** no topo de cada arquivo:
+   - `docs/frontend.md` → tarefas de UI, páginas, hooks, formulários, rotas, auth e experiência do usuário
+   - `docs/backend.md` → tarefas de schema, tabelas, RLS, RPC, triggers, views e migrations
+6. Se a tarefa for full-stack, consulte os dois guias.
+7. Ao finalizar mudanças de arquitetura, atualize o `README.md` do contexto.
 
-3.  **Icons**:
-    *   **Primary Choice**: Use icons from the `lucide-react` library.
+Regra prática:
+- Não releia `docs/frontend.md` ou `docs/backend.md` por completo sem necessidade.
+- Leia apenas a seção relevante para a tarefa atual.
 
-4.  **Forms**:
-    *   **Management**: Use `react-hook-form` for all form logic (state, validation, submission).
-    *   **Validation**: Use `zod` for schema-based validation with `react-hook-form` via `@hookform/resolvers`.
+---
 
-5.  **State Management**:
-    *   **Local State**: Use React's `useState` and `useReducer` hooks for component-level state.
-    *   **Shared/Global State**: For state shared between multiple components, prefer React Context API.
-    *   **Complex Global State**: If application state becomes significantly complex, discuss the potential introduction of a dedicated state management library (e.g., Zustand, Jotai) before implementing.
+## Stack — Não substituir sem aprovação
 
-6.  **Routing**:
-    *   Utilize the Next.js App Router (file-system based routing in the `src/app/` directory).
+- UI: **shadcn/ui** (já instalado). Não editar `src/components/ui/`. Criar wrappers se precisar customizar.
+- Estilização: **Tailwind CSS** apenas. Sem CSS customizado. Classes condicionais via `cn()` de `src/lib/utils.ts`.
+- Ícones: **lucide-react** (já instalado).
+- Formulários: **React Hook Form + Zod**.
+- Dados da API: **TanStack Query** — nunca `useEffect` para fetch.
+- Notificações: **sonner**.
+- Roteamento: **React Router**.
 
-7.  **API Calls & Data Fetching**:
-    *   **Client-Side**: Use the native `fetch` API or a simple wrapper around it.
-    *   **Server-Side (Next.js)**: Leverage Next.js Route Handlers (in `src/app/api/`) or Server Actions for server-side logic and data fetching.
+---
 
-8.  **Animations**:
-    *   Use `tailwindcss-animate` plugin and the animation utilities provided by Radix UI components.
+## Regras de Código
 
-9.  **Notifications/Toasts**:
-    *   Use the `Sonner` component (from `src/components/ui/sonner.tsx`) for all toast notifications.
+- TypeScript estrito — sem `any`. Sem `object` em props. Use tipos específicos.
+- Componentes: máx. **150 linhas**. Acima disso, extrair hook → subcomponente → types.
+- Pages: máx. **120 linhas**, apenas composição — sem lógica.
+- Hooks: máx. **120 linhas**.
+- JSDoc obrigatório em todo componente, hook e função utilitária.
+- Comentários explicam o *porquê*, nunca o óbvio.
+- Named exports para componentes de feature. Default export só em pages.
+- Imports absolutos com alias `@/`.
+- Sem `console.log`. Sem código comentado morto.
 
-10. **Charts & Data Visualization**:
-    *   Use `recharts` and its associated components (e.g., `src/components/ui/chart.tsx`) for displaying charts.
+---
 
-11. **Utility Functions**:
-    *   General-purpose helper functions should be placed in `src/lib/utils.ts`.
-    *   Ensure functions are well-typed and serve a clear, reusable purpose.
+## Contextos — Arquitetura do Projeto
 
-12. **Custom Hooks**:
-    *   Custom React hooks should be placed in the `src/hooks/` directory (e.g., `src/hooks/use-mobile.tsx`).
+O projeto é dividido em contextos funcionais em `src/contexts/<nome>/`. Cada contexto tem:
+- `README.md` — arquitetura, tabelas usadas, decisões técnicas. **Sempre atualizar após mudanças.**
+- `components/`, `hooks/`, `services/`, `<nome>.types.ts`
 
-13. **TypeScript**:
-    *   Write all new code in TypeScript.
-    *   Strive for strong typing and leverage TypeScript's features to improve code quality and maintainability. Avoid using `any` where possible.
+**Regra obrigatória:** ao criar um novo contexto em `src/contexts/<nome>/`, criar também o `README.md` desse contexto no mesmo commit.
 
-By following these guidelines, we can build a more robust, maintainable, and consistent application.
+**Ao receber uma tarefa:** leia o `README.md` do contexto relevante antes de editar código.  
+**Ao finalizar uma tarefa com mudanças de arquitetura:** atualize o `README.md` do contexto.  
+**Se o contexto ainda não existir:** crie a estrutura inicial completa, incluindo `README.md`.
+
+---
+
+## Segurança & Git
+
+- `.env` **nunca commitado**. Está no `.gitignore`. Versionar apenas `.env.example`.
+- Nunca expor `service_role` key no front-end. Apenas `anon` key.
+- Supabase client: somente `src/integrations/supabase/client.ts`.
+- Nunca commitar direto na `main`. Branches: `feature/*`, `fix/*`, `release/*`.
+
+---
+
+## Versionamento
+
+- O Dyad versiona automaticamente cada edição via git. Use o painel de versões para reverter.
+- Releases públicos: SemVer em `package.json` + tag git + entrada no `CHANGELOG.md`.
+
+---
+
+## Arquivos Protegidos — Não modificar sem confirmação
+
+- `src/components/ui/*` — componentes shadcn/ui
+- `src/integrations/supabase/client.ts` — cliente Supabase
+- `supabase/migrations/*` — nunca alterar migrations existentes, apenas criar novas
+- `.env` — nunca tocar
