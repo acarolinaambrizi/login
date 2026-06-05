@@ -1,0 +1,1 @@
+"use client"; import { useRouter } from "next/navigation"; import { useEffect } from "react"; export default function ClientPageRoot() { const router = useRouter(); useEffect(() => { const session = supabase.auth.getSession(); session.then(({ data: { session } }) => { if (session) { router.push("/home"); } else { router.push("/login"); } }); }, []); return null; }
