@@ -19,15 +19,15 @@ AS $$
 BEGIN
   RETURN QUERY
   SELECT
-    id,
-    user_id,
-    title,
-    description,
-    completed,
-    created_at,
-    updated_at
-  FROM public.todos
-  WHERE user_id = auth.uid();
+    t.id,
+    t.user_id,
+    t.title,
+    t.description,
+    t.completed,
+    t.created_at,
+    t.updated_at
+  FROM public.todos t
+  WHERE t.user_id = auth.uid();
 END;
 $$;
 
