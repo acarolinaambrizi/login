@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
 import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { toast } from "sonner";
 
 /**
@@ -40,7 +39,29 @@ export default function LoginPage() {
           supabaseClient={supabase}
           providers={[]}
           appearance={{
-            theme: ThemeSupa,
+            theme: {
+              default: {
+                colors: {
+                  brand: "#0ea5e9",
+                  brandAccent: "#06b6d4",
+                  brandButtonText: "white",
+                  defaultButtonBackground: "#e2e8f0",
+                  defaultButtonBorder: "#cbd5e1",
+                  defaultButtonText: "#0f172a",
+                  dividerBackground: "#e2e8f0",
+                  inputBackground: "#f1f5f9",
+                  inputBorder: "#cbd5e1",
+                  inputBorderFocus: "#0ea5e9",
+                  inputBorderHover: "#94a3b8",
+                  inputLabelText: "#334155",
+                  inputPlaceholder: "#94a3b8",
+                  inputText: "#0f172a",
+                  linkButtonText: "#0ea5e9",
+                  messageText: "#64748b",
+                  messageTextDanger: "#dc2626",
+                },
+              },
+            },
           }}
           theme="light"
           onSignIn={() => toast.success("Login bem‑sucedido!")}
