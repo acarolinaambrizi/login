@@ -8,6 +8,10 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
+/**
+ * Protege rotas que exigem autenticação.
+ * Redireciona para /login se o usuário não estiver autenticado.
+ */
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
   const router = useRouter();

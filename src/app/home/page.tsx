@@ -9,6 +9,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { TodoList } from "@/components/todo/TodoList";
 
+/**
+ * Página principal do app "Meu To Do".
+ * Exibe o dashboard com a lista de tarefas do usuário.
+ */
 export default function HomePage() {
   const { user } = useAuth();
   const router = useRouter();
@@ -39,9 +43,9 @@ export default function HomePage() {
 
           <Card className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/80 mb-6">
             <CardHeader>
-              <CardTitle>Dashboard</CardTitle>
+              <CardTitle>Suas Tarefas</CardTitle>
               <CardDescription>
-                Suas tarefas e atividades
+                Gerencie suas tarefas diárias
               </CardDescription>
             </CardHeader>
             <CardContent>
