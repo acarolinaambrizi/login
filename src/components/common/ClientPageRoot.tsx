@@ -5,10 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 export default function ClientPageRoot() {
   const router = useRouter();
-  
+
   useEffect(() => {
-    const session = supabase.auth.getSession();
-    session.then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         router.push("/home");
       } else {
