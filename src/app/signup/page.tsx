@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,15 +8,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
+/**
+ * Página de cadastro do app.
+ * Usa Supabase Auth para criar novas contas com validação de dados.
+ */
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [validationError, setValidationError] = useState("");
+
   const router = useRouter();
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     if (!fullName.trim()) {
       setValidationError("O nome completo é obrigatório.");
       return false;
@@ -41,7 +45,6 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     setLoading(true);
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -53,14 +56,11 @@ export default function SignupPage() {
           },
         },
       });
-
       if (error) {
-        // Erro de senha fraca ou outras validações do Supabase
         toast.error(`Erro ao cadastrar: ${error.message}`);
         return;
       }
-
-      toast.success("Cadastro realizado! Verifique seu email.");
+      toast.success("Cadastro realizado! Verifique seu email para ativação.");
       router.push("/login");
     } catch (err: any) {
       toast.error(`Erro inesperado: ${err.message}`);
@@ -103,9 +103,7 @@ export default function SignupPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">
-                Senha
-              </Label>
+              <Label htmlFor="password" className="text-sm font-medium">Senha</Label>
               <Input
                 id="password"
                 type="password"
@@ -114,21 +112,21 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              {password.length > 0 && (
-                <p className="text-xs text-muted-foreground">
-                  Mínimo de 6 caracteres
-                </p>
-              )}
+              <p className="text-xs text-muted-foreground"> Mínimo de 6 caracteres </p>
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Cadastrando..." : "Cadastrar"}
             </Button>
           </form>
         </CardContent>
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => router.push("/login")}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Já tem conta? Entrar
+          </button>
+        </div>
       </Card>
     </div>
   );
