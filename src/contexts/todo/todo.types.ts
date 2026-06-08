@@ -9,7 +9,4 @@ export type Todo = {
 
 export type NewTodoInput = Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>;
 
-export type UpdateTodoInput = {
-  id: string;
-  updates: Partial<Omit<Todo, 'id' | 'createdAt'>>;
-};
+export type UpdateTodoInput = Partial<Omit<Todo, 'id' | 'createdAt' | 'updatedAt'>>;
