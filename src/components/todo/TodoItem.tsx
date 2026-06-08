@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X } from "lucide-react";
+import { Check, Trash, X } from "lucide-react";
 
 interface TodoItemProps {
   /** Dados da tarefa */
@@ -24,11 +24,15 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
     <Card
       className={cn(
         "flex flex-col justify-between p-4",
-        todo.completed && "bg-success-100 dark:bg-success-900"
+        todo.completed && "bg-green-50 dark:bg-green-900/20 opacity-75"
       )}
     >
       <CardHeader className="p-0">
-        <CardTitle className={cn(todo.completed && "line-through")}>
+        <CardTitle
+          className={cn(
+            todo.completed && "line-through text-gray-500"
+          )}
+        >
           {todo.title}
         </CardTitle>
       </CardHeader>
@@ -51,7 +55,7 @@ export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
             onClick={() => onDelete(todo.id)}
             aria-label="Excluir tarefa"
           >
-            <X />
+            <Trash />
           </Button>
         </div>
       </CardContent>
