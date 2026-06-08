@@ -18,9 +18,13 @@ export default function HomePage() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-    toast.success("Logout realizado com sucesso!");
+    try {
+      await supabase.auth.signOut();
+      toast.success("Logout realizado com sucesso!");
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error?.message ?? "Erro ao fazer logout");
+    }
   };
 
   return (
