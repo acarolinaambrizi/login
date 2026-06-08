@@ -13,19 +13,13 @@ import { toast } from "sonner";
 export default function LoginPage() {
   const router = useRouter();
 
-  const handleAuthChange = async (event: string, session: any) => {
-    if (event === "SIGNED_IN") {
-      toast.success("Login realizado com sucesso!");
-      router.push("/home");
-    } else if (event === "SIGNED_OUT") {
-      toast.info("Você saiu da conta.");
-    }
-  };
-
   // Escuta mudanças de autenticação para redirecionar automaticamente
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_IN" && session?.user) {
+      toast.success("Login bem‑sucedido!");
       router.replace("/home");
+    } else if (event === "SIGNED_OUT") {
+      toast.info("Logout efetuado.");
     }
   });
 
@@ -56,15 +50,12 @@ export default function LoginPage() {
                   inputLabelText: "#334155",
                   inputPlaceholder: "#94a3b8",
                   inputText: "#0f172a",
-                  messageText: "#64748b",
                   messageTextDanger: "#dc2626",
                 },
               },
             },
           }}
           theme="light"
-          onSignIn={() => toast.success("Login bem‑sucedido!")}
-          onSignOut={() => toast.info("Logout efetuado.")}
         />
       </div>
     </div>
