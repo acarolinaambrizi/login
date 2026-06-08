@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { NewTodoInput, UpdateTodoInput, Todo } from "../todo.types";
+import type { NewTodoInput, Todo } from "../todo.types";
 
 /**
  * Busca todas as tarefas do usuário autenticado.
@@ -27,7 +27,7 @@ export async function createTodo(input: NewTodoInput): Promise<Todo> {
  */
 export async function updateTodo(
   id: string,
-  updates: UpdateTodoInput
+  updates: { title?: string; description?: string; completed?: boolean }
 ): Promise<Todo> {
   const { data, error } = await supabase.rpc("update_todo", {
     p_id: id,

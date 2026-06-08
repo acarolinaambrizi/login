@@ -17,15 +17,15 @@ export function TodoList() {
   } = useTodos();
 
   const handleAdd = async (title: string, description?: string) => {
-    await addTodo({ title, description });
+    await addTodo({ title, description, completed: false });
   };
 
   const handleToggle = async (id: string, completed: boolean) => {
     try {
       await editTodo({ id, updates: { completed } });
       toast.success("Status atualizado");
-    } catch (err: any) {
-      toast.error(err.message ?? "Erro ao atualizar status");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao atualizar status");
     }
   };
 
@@ -33,8 +33,8 @@ export function TodoList() {
     try {
       await removeTodo(id);
       toast.success("Tarefa removida");
-    } catch (err: any) {
-      toast.error(err.message ?? "Erro ao remover tarefa");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao remover tarefa");
     }
   };
 
