@@ -56,7 +56,6 @@ export default function LoginPage() {
                   inputLabelText: "#334155",
                   inputPlaceholder: "#94a3b8",
                   inputText: "#0f172a",
-                  linkButtonText: "#0ea5e9",
                   messageText: "#64748b",
                   messageTextDanger: "#dc2626",
                 },
