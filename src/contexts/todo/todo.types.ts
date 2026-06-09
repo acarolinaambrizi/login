@@ -1,5 +1,5 @@
 /**
- * Tipos do contexto de tarefas.
+ * Representa uma tarefa do usuário.
  *
  * @property id - Identificador único da tarefa (UUID).
  * @property user_id - Identificador do usuário dono da tarefa.
@@ -31,11 +31,16 @@ export interface NewTodoInput {
 /**
  * Dados para atualizar uma tarefa existente.
  */
+export interface UpdateTodoInput {
+  title?: string;
+  description?: string;
+  completed?: boolean;
+}
+
+/**
+ * Variáveis para a mutação de edição de tarefa.
+ */
 export interface EditTodoVariables {
   id: string;
-  updates: {
-    title?: string;
-    description?: string;
-    completed?: boolean;
-  };
+  updates: UpdateTodoInput;
 }

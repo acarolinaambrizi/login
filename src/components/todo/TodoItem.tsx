@@ -19,17 +19,22 @@ interface TodoItemProps {
   onDelete: (id: string) => void;
 }
 
+/**
+ * Exibe um item de tarefa com ações de toggle e exclusão.
+ * Estilizado com destaque visual para tarefas concluídas.
+ */
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   return (
     <Card
       className={cn(
-        "flex flex-col justify-between p-4",
+        "flex flex-col justify-between p-4 transition-all duration-200",
         todo.completed && "bg-green-50 dark:bg-green-900/20 opacity-75"
       )}
     >
       <CardHeader className="p-0">
         <CardTitle
           className={cn(
+            "text-base font-medium",
             todo.completed && "line-through text-gray-500"
           )}
         >
